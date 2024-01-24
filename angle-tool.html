@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Angles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border:0; 
+            color: black;
+            box-sizing: border-box;
+            
+            
+        }
+        
+        body {
+            height:100%;
+            width:100%;
+        }
+        :root {
+            --main-bg-color: rgb(14, 75, 167);
+        }
+
+        div.wrapper {
+            min-height:100%;
+            height:100%;
+            /* display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border:1px solid green; */
+        }
+
+        div.top { 
+            width:100%;
+            min-height:20%;
+            --top-padding: 10px;
+            padding-left: var(--top-padding);
+            padding-right: var(--top-padding);
+            padding-top: var(--top-padding);
+        }
+        div.top div.header {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            
+            
+            height:60px;
+            border:1px solid black;
+            border-radius:10px;
+            
+            background-color: var(--main-bg-color);
+        }
+
+        div.main {
+            width:100%;
+            min-height:100%;
+            height:30%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border:1px solid red;
+            
+        }
+
+
+
+        div.main * {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        div.main .left {
+            background-color: var(--main-bg-color);
+            width:29%;
+            height:100%;
+            border:1px solid black;
+        }
+
+        div.main .right {
+            width:71%;
+            border:1px solid black;
+            height:300px;
+            height:100%;
+        }
+
+        input#angle {
+            width: 100px;
+            height: 25px;
+        }
+    </style>
+    <!--number validating in an input-->
+    <script>
+        function validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+    </script>
+    <!--sinus calculating-->
+    <script>
+        function button_onclick() {
+            var x = document.getElementById('t1').value.replace(',', '.');
+            var func = document.getElementById('trig_func').value;
+            if (isNaN(x)) {
+                document.getElementById('t2').innerHTML = 'Введите число!';
+                return;
+            }
+            var unitFactor = Math.PI / 180;
+            if (document.getElementById('r2').checked) {
+                unitFactor = 1
+            } else if (document.getElementById('r3').checked) {
+                unitFactor = Math.PI / 200;
+            }
+            var input = x;
+            x *= unitFactor;
+            var ans;
+            switch (func) {
+                case 'sin':
+                    ans = Math.sin(x);
+                    break;
+                case 'cos':
+                    ans = Math.cos(x);
+                    break;
+                case 'tg':
+                    ans = Math.tan(x);
+                    break;
+                case 'ctg':
+                    ans = 1 / Math.tan(x);
+                    break;
+            }
+            if (Math.abs(ans) < eps) {
+                ans = 0;
+            }
+            if (Math.abs(ans) > 1e+12) {
+                ans = 'значение не определено.';
+            }
+            document.getElementById('t2').innerHTML = func + '(' + input + ') = ' + ans;
+        }
+
+
+        function sinusCalc(x) {
+            var result = (Math.sin(x*(Math.PI / 180))).toFixed(4);
+            console.log();
+            console.log(x%1);
+            minSec(x);
+            document.getElementById("res").innerText = result;
+        }
+        
+        function minSec(number){
+            var min = ((number%1)*60);
+            var sec = (min%1)*60;
+
+            var secShow = sec.toFixed(2);
+            console.log("Angle - min - sec : " + Math.trunc(number) + "°"+Math.trunc(min)+"'"+secShow+"\"");
+        }
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="top"> <div class="header">top</div> </div>
+        
+        <div class="main">
+
+            <div class="left"> left</div>
+
+            <div class="right">
+                <select name="function" id="func" style="width:100px; height:30px;">
+                    <option value="sin" style="width:50px; height:20px;">sin</option>
+                    <option value="cos" style="width:20px; height:20px;">cos</option>
+                    <option value="tg" style="width:20px; height:20px;">tg</option>
+                    <option value="ctg" style="width:20px; height:20px;">ctg</option>
+                </select>
+    
+                <input type="text" placeholder="angle" id="angle" onchange="sinusCalc(this.value)"
+                    onkeypress="validate(event)">
+                <p id="res">2</p>
+            </div>
+
+            
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

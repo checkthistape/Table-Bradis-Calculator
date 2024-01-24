@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Табы на ванильном JS</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:900|Open+Sans:400&amp;subset=cyrillic,cyrillic-ext"
+        rel="stylesheet">
+
+    <style>
+        /* normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+        button,
+        hr,
+        input {
+            overflow: visible
+        }
+
+        progress,
+        sub,
+        sup {
+            vertical-align: baseline
+        }
+
+        [type=checkbox],
+        [type=radio],
+        legend {
+            box-sizing: border-box;
+            padding: 0
+        }
+
+        html {
+            line-height: 1.15;
+            -webkit-text-size-adjust: 100%
+        }
+
+        body {
+            margin: 0
+        }
+
+        details,
+        main {
+            display: block
+        }
+
+        h1 {
+            font-size: 2em;
+            margin: .67em 0
+        }
+
+        hr {
+            box-sizing: content-box;
+            height: 0
+        }
+
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: monospace, monospace;
+            font-size: 1em
+        }
+
+        a {
+            background-color: transparent
+        }
+
+        abbr[title] {
+            border-bottom: none;
+            text-decoration: underline;
+            text-decoration: underline dotted
+        }
+
+        b,
+        strong {
+            font-weight: bolder
+        }
+
+        small {
+            font-size: 80%
+        }
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative
+        }
+
+        sub {
+            bottom: -.25em
+        }
+
+        sup {
+            top: -.5em
+        }
+
+        img {
+            border-style: none
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: 100%;
+            line-height: 1.15;
+            margin: 0
+        }
+
+        button,
+        select {
+            text-transform: none
+        }
+
+        [type=button],
+        [type=reset],
+        [type=submit],
+        button {
+            -webkit-appearance: button
+        }
+
+        [type=button]::-moz-focus-inner,
+        [type=reset]::-moz-focus-inner,
+        [type=submit]::-moz-focus-inner,
+        button::-moz-focus-inner {
+            border-style: none;
+            padding: 0
+        }
+
+        [type=button]:-moz-focusring,
+        [type=reset]:-moz-focusring,
+        [type=submit]:-moz-focusring,
+        button:-moz-focusring {
+            outline: ButtonText dotted 1px
+        }
+
+        fieldset {
+            padding: .35em .75em .625em
+        }
+
+        legend {
+            color: inherit;
+            display: table;
+            max-width: 100%;
+            white-space: normal
+        }
+
+        textarea {
+            overflow: auto
+        }
+
+        [type=number]::-webkit-inner-spin-button,
+        [type=number]::-webkit-outer-spin-button {
+            height: auto
+        }
+
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+
+        [type=search]::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+
+        summary {
+            display: list-item
+        }
+
+        [hidden],
+        template {
+            display: none
+        }
+
+
+        /* Variables */
+        html {
+            --pink-bg: #9b59b6;
+            --pink-tab: #8e44ad;
+            --pink-tab-active: #612e76;
+            font-size: 62.5%;
+            font-family: 'Open Sans', sans-serif;
+            box-sizing: border-box;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            font-size: 2rem;
+            line-height: 1.5;
+            background: var(--pink-bg);
+        }
+
+        h1 {
+            font-size: 82px;
+            margin: 0 0 42px;
+            font-family: Poppins;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .wrapper {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: var(--pink-bg);
+        }
+
+        /* Tabs */
+
+        .tabs {
+            display: grid;
+        }
+
+        [role="tablist"] {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 10px;
+        }
+
+        [role="tabpanel"] {
+
+
+            background: var(--pink-tab-active);
+            padding: 2rem;
+            color: white;
+        }
+
+        button {
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 3rem;
+            background: var(--pink-tab);
+            border: 0;
+            color: white;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+        }
+
+        button[aria-selected="true"] {
+            background: var(--pink-tab-active);
+        }
+
+        button:focus {
+            outline: 0;
+        }
+    </style>
+
+    <script>
+        function validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+
+
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+        function sin(angle){ return (( Math.round((Math.sin(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
+        function cos(angle){ return (( Math.round((Math.cos(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
+        function tg(angle){ return (( Math.round((Math.tan(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
+        function ctg(angle){ return 1/(( Math.round((Math.tan(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
+        function bradisCalc(x, minSecResid) {
+
+            var sinresult = (Math.sin(x * (Math.PI / 180))).toFixed(8);
+            var cosresult = (Math.cos(x * (Math.PI / 180))).toFixed(8);
+            var tgresult = (Math.tan(x * (Math.PI / 180))).toFixed(8);
+            var ctgresult = (1/(Math.tan(x * (Math.PI / 180)))).toFixed(8);
+
+            //var res = (x/(Math.sin(Math.PI/180))).toFixed(7);
+            
+            
+            
+            console.log();
+            console.log(x % 1);
+            console.log("math sin: " + res);
+            
+
+            document.getElementById("sin-res").innerText = "sin(" + x + ") = " + sinresult + "";
+            document.getElementById("cos-res").innerText = "cos(" + x + ") = " + cosresult + "";
+            document.getElementById("tg-res").innerText = "tg(" + x + ") = " + tgresult + "";
+            document.getElementById("ctg-res").innerText = "ctg(" + x + ") = " + ctgresult + "";
+
+            minSec(x, minSecResid);
+        }
+
+        function asin(val){ return Math.round(( ( (Math.asin(val))*(180/Math.PI) )+Number.EPSILON )*100)/100; }
+        function acos(val){ return Math.round(( ( (Math.acos(val))*(180/Math.PI) )+Number.EPSILON )*100)/100; }
+        function atg(val){ return Math.round(( ( (Math.atan(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;  }
+        function actg(val){ return Math.round(((  ((Math.PI/2)-Math.atan(val)) * (180/Math.PI)  )+Number.EPSILON)*100)/100; }
+
+        function antiBradisCalc(val){
+            var asinres = Math.round(( ( (Math.asin(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;
+            var acosres = Math.round(( ( (Math.acos(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;
+            var atgres = Math.round(( ( (Math.atan(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;
+            var actgres = Math.round(((  ((Math.PI/2)-Math.atan(val)) * (180/Math.PI)  )+Number.EPSILON)*100)/100;
+            document.getElementById("asin-res").innerText = "sin(α) = " + asinres + "° - " + minSecFunc(asinres);
+            document.getElementById("acos-res").innerText = "cos(α) = " + acosres + "° - " + minSecFunc(acosres);
+            document.getElementById("atg-res").innerText = "tg(α) = " + atgres + "° - " + minSecFunc(atgres);
+            document.getElementById("actg-res").innerText = "ctg(α) = " + actgres + "° - " + minSecFunc(actgres);
+        }
+
+        function minSecFunc(number){
+            var min = ((number % 1) * 60);
+            var sec = (min % 1) * 60;
+
+            var secShow = sec.toFixed(2);
+            
+            return Math.trunc(number) + "°" + Math.trunc(min) + "'" + secShow + "\"";
+        }
+
+        function minSec(number, elementid) {
+            var min = ((number % 1) * 60);
+            var sec = (min % 1) * 60;
+
+            var secShow = sec.toFixed(2);
+            console.log();
+            document.getElementById(elementid).innerText = "Angle - min - sec : " + Math.trunc(number) + "°" + Math.trunc(min) + "'" + secShow + "\"";
+        }
+
+        function refractionFunc(n1, angle1, n2){ return asin((n1*Math.sin(angle1 * (Math.PI / 180)))/n2); }
+        
+        function refraction(n1, angle1, n2, angle2){
+            console.log("sin(): " + sin(angle1));
+            console.log("cos()" + cos(angle1));
+            console.log("tg()" + tg(angle1));
+            console.log("ctg()" + ctg(angle1));
+            var result=0;
+            if(n1==""){   }
+
+            // var sinAngle2 = (n1*Math.sin(angle1 * (Math.PI / 180)))/n2;
+            // console.log("sinAngle2: " + asin(sinAngle2));
+            console.log(refractionFunc(n1, angle1, n2));
+        }
+        
+    </script>
+</head>
+
+<body>
+
+
+
+    <div class="wrapper">
+        <h1>WATCH IT !</h1>
+
+        <div class="tabs">
+            <div role="tablist" aria-label="Streaming Content">
+                <button role="tab" aria-selected="true" id="series">
+                    Decimal degree
+                </button>
+                <button role="tab" aria-selected="false" id="movies">
+                    Bradis
+                </button>
+                <button role="tab" aria-selected="false" id="sports">
+                    Light Refraction
+                </button>
+            </div>
+
+            <!--- 1 --->
+            <div role="tabpanel" aria-labelledby="series">
+                <p>Write your decimal degree and you will get value in DMS </p>
+
+                <div class="content"
+                    style="border:1px solid black; display:flex; justify-content: start; align-items: center;">
+                    <style>
+                        .content * {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                        }
+                    </style>
+                    <input type="text" placeholder="angle" id="sin-brad" onchange="minSec(this.value, 'res')"
+                        onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')">
+                    <span style="margin-left:-5px;">°</span>
+                    <p id="res"></p>
+
+                </div>
+
+
+            </div>
+
+            <!--- 2 --->
+            <div role="tabpanel" aria-labelledby="movies" hidden>
+                <p>Write degree and you will get value for this trigomometric function from Bradis table </p>
+
+                <div class="content"
+                    style="border:1px solid black; display:flex; flex-direction: column; justify-content: start; align-items: center; padding-top:10px;">
+                    <style>
+                        .content * {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                        }
+                    </style>
+                    <div class="input-part">
+                        <span style="margin-right:-20px;"><b>α=</b></span>
+                    <input type="text" placeholder="angle" id="angle" onchange="bradisCalc(this.value, 'minSec')"
+                        onkeypress="validate(event)" onkeyup="bradisCalc(this.value, 'minSec')">
+                        <span style="margin-left:-20px;"><b>°</b></span>
+                    </div>
+                    
+                    <div class="minut-sup-part"><p id="minSec">yoyo</p></div>
+
+                    <div class="bradis-result" style="background-color: white; border-radius: 10px; color:black; font-style: bold; margin-top:30px; width:40%; margin-bottom:30px;">
+                        <hr>
+                        <p id="sin-res">sin() = </p>
+                        <p id="cos-res">cos() = </p>
+                        <p id="tg-res">tg() = </p>
+                        <p id="ctg-res">ctg() = </p>
+                        <hr>
+                    </div>
+
+                    <div class="input-part">
+                        <span style="margin-right:-20px;"><b></b></span>
+                    <input type="text" placeholder="value" id="value" onchange="antiBradisCalc(this.value)"
+                        onkeypress="validate(event)" onkeyup="antiBradisCalc(this.value)">
+                        <span style="margin-left:-20px;"><b></b></span>
+                    </div>
+                    <div class="antibradis-result" style="background-color: white; border-radius: 10px; color:black; font-style: bold; margin-top:30px; width:40%; margin-bottom:30px;">
+
+                        <hr>
+                        <p id="asin-res">sin(α) = </p>
+                        <p id="acos-res">cos(α) = </p>
+                        <p id="atg-res">tg(α) = </p>
+                        <p id="actg-res">ctg(α) = </p>
+                        <hr>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--- 3 --->
+            <div role="tabpanel" aria-labelledby="sports" hidden>
+                <p>Write data and you will get end refraction angle</p>
+
+                <div class="content"
+                    style="border:1px solid black; display:flex; flex-direction: column; justify-content: start; align-items: center;">
+                    <style>
+                        div.content * {
+                            margin-left: 20px;
+                            margin-right: 10px;
+                            
+                        }
+                    </style>
+                    <div class="part-one" style="display:flex; flex-direction: row; justify-content: start; align-items: center; margin-bottom:20px; border:1px solid black;" >
+                        <span>1.</span>
+                        <input type="text" placeholder="refractive index1" id="ri1" onchange="minSec(this.value, 'res')"
+                            onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')">
+                        
+                        <input type="text" placeholder="angle1" id="angle1" onchange="minSec(this.value, 'res')"
+                            onkeypress="validate(event)" onkeyup="refraction(document.getElementById('ri1').value, document.getElementById('angle1').value, document.getElementById('ri2').value, document.getElementById('angle2').value)"> 
+                        <span style="margin-left:-5px;">°</span>
+                        <p id="res"></p>
+                    </div>
+                    
+                        
+                    <div class="part-two" style="display:flex; flex-direction: row; justify-content: start; align-items: center; border:1px solid black;">
+                        <span>2.</span>
+                        <input type="text" placeholder="refractive index2" id="ri2" onchange="minSec(this.value, 'res')"
+                            onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')">
+                        
+                        <input type="text" placeholder="angle2" id="angle2" onchange="minSec(this.value, 'res')"
+                            onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')"> 
+                            <span style="margin-left:-5px;">°</span>
+                        <p id="res"></p>
+                    </div>
+                    res:
+                    
+
+                </div>
+
+            </div>
+            <!--- 3 --->
+
+        </div>
+    </div>
+    <script>
+        /*.~~~~~~~~~~~~~~~~~~~~~.Tabs.~~~~~~~~~~~~~~~~~~~~~*/  
+        const tabs = document.querySelector('.tabs');
+        const tabButtons = tabs.querySelectorAll('[role="tab"]');
+        const tabPanels = Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+
+        function handleTabClick(event) {
+
+            // Прячем все элменты tab panels (содержимое табов)
+            tabPanels.forEach(panel => {
+                panel.hidden = true;
+            });
+            // Устанавливаем состояние selected для всех табов равное false
+            tabButtons.forEach(tab => {
+                // tab.ariaSelected = false;
+                tab.setAttribute('aria-selected', false);
+            });
+            // Для "кликнутого" таба устанвливаем значение selected равное true
+            event.currentTarget.setAttribute('aria-selected', true);
+
+            // Находим tabPanel для "кликнутого" таба и отображаем
+            const { id } = event.currentTarget;
+
+            console.log(tabPanels);
+
+            const tabPanel = tabPanels.find(
+                panel => panel.getAttribute('aria-labelledby') === id
+            );
+            tabPanel.hidden = false;
+        }
+
+        tabButtons
+            .forEach(button => button.addEventListener('click', handleTabClick));
+
+
+        /*.~~~~~~~~~~~~~~~~~~~~~.Tabs.~~~~~~~~~~~~~~~~~~~~~*/  
+        
+        document.getElementById('angle').addEventListener('keydown', function (event) {
+            // Check if Enter was pressed
+            if (event.keyCode === 13) {
+                // Prevent the default action
+                event.preventDefault();
+
+                // Trigger the button click
+                minSec(document.getElementById("angle").value);
+            }
+        });
+    </script>
+</body>
+
+</html>
