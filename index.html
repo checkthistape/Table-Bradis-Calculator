@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Табы на ванильном JS</title>
+    <title>Table Bradis Calculator</title>
+    <!-- The whole design was took from github.com/VasilyMur/Tabs-JavaScript -->
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:900|Open+Sans:400&amp;subset=cyrillic,cyrillic-ext"
         rel="stylesheet">
@@ -279,92 +280,195 @@
                 if (theEvent.preventDefault) theEvent.preventDefault();
             }
         }
-        function sin(angle){ return (( Math.round((Math.sin(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
-        function cos(angle){ return (( Math.round((Math.cos(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
-        function tg(angle){ return (( Math.round((Math.tan(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
-        function ctg(angle){ return 1/(( Math.round((Math.tan(angle * (Math.PI / 180))+Number.EPSILON )*100000000) )/100000000); }
+
+        function sin(angle) { return ((Math.round((Math.sin(angle * (Math.PI / 180)) + Number.EPSILON) * 100000000)) / 100000000); }
+        function cos(angle) { return ((Math.round((Math.cos(angle * (Math.PI / 180)) + Number.EPSILON) * 100000000)) / 100000000); }
+        function tg(angle) { return ((Math.round((Math.tan(angle * (Math.PI / 180)) + Number.EPSILON) * 100000000)) / 100000000); }
+        function ctg(angle) { return 1 / ((Math.round((Math.tan(angle * (Math.PI / 180)) + Number.EPSILON) * 100000000)) / 100000000); }
+
+        function asin(val) { return Math.round((((Math.asin(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100; }
+        function acos(val) { return Math.round((((Math.acos(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100; }
+        function atg(val) { return Math.round((((Math.atan(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100; }
+        function actg(val) { return Math.round(((((Math.PI / 2) - Math.atan(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100; }
+
+
         function bradisCalc(x, minSecResid) {
 
             var sinresult = (Math.sin(x * (Math.PI / 180))).toFixed(8);
             var cosresult = (Math.cos(x * (Math.PI / 180))).toFixed(8);
             var tgresult = (Math.tan(x * (Math.PI / 180))).toFixed(8);
-            var ctgresult = (1/(Math.tan(x * (Math.PI / 180)))).toFixed(8);
+            var ctgresult = (1 / (Math.tan(x * (Math.PI / 180)))).toFixed(8);
 
-            //var res = (x/(Math.sin(Math.PI/180))).toFixed(7);
-            
-            
-            
-            console.log();
-            console.log(x % 1);
-            console.log("math sin: " + res);
-            
-
-            document.getElementById("sin-res").innerText = "sin(" + x + ") = " + sinresult + "";
-            document.getElementById("cos-res").innerText = "cos(" + x + ") = " + cosresult + "";
-            document.getElementById("tg-res").innerText = "tg(" + x + ") = " + tgresult + "";
-            document.getElementById("ctg-res").innerText = "ctg(" + x + ") = " + ctgresult + "";
+            document.getElementById("sin-res").innerText = "sin(" + x + "°) = " + sinresult + "";
+            document.getElementById("cos-res").innerText = "cos(" + x + "°) = " + cosresult + "";
+            document.getElementById("tg-res").innerText = "tg(" + x + "°) = " + tgresult + "";
+            document.getElementById("ctg-res").innerText = "ctg(" + x + "°) = " + ctgresult + "";
 
             minSec(x, minSecResid);
         }
 
-        function asin(val){ return Math.round(( ( (Math.asin(val))*(180/Math.PI) )+Number.EPSILON )*100)/100; }
-        function acos(val){ return Math.round(( ( (Math.acos(val))*(180/Math.PI) )+Number.EPSILON )*100)/100; }
-        function atg(val){ return Math.round(( ( (Math.atan(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;  }
-        function actg(val){ return Math.round(((  ((Math.PI/2)-Math.atan(val)) * (180/Math.PI)  )+Number.EPSILON)*100)/100; }
+        
 
-        function antiBradisCalc(val){
-            var asinres = Math.round(( ( (Math.asin(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;
-            var acosres = Math.round(( ( (Math.acos(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;
-            var atgres = Math.round(( ( (Math.atan(val))*(180/Math.PI) )+Number.EPSILON )*100)/100;
-            var actgres = Math.round(((  ((Math.PI/2)-Math.atan(val)) * (180/Math.PI)  )+Number.EPSILON)*100)/100;
+        function antiBradisCalc(val) {
+            //var asinres = Math.round((((Math.asin(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100;
+            var asinres = asin(val);
+            var acosres = Math.round((((Math.acos(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100;
+            var atgres = Math.round((((Math.atan(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100;
+            var actgres = Math.round(((((Math.PI / 2) - Math.atan(val)) * (180 / Math.PI)) + Number.EPSILON) * 100) / 100;
             document.getElementById("asin-res").innerText = "sin(α) = " + asinres + "° - " + minSecFunc(asinres);
             document.getElementById("acos-res").innerText = "cos(α) = " + acosres + "° - " + minSecFunc(acosres);
             document.getElementById("atg-res").innerText = "tg(α) = " + atgres + "° - " + minSecFunc(atgres);
             document.getElementById("actg-res").innerText = "ctg(α) = " + actgres + "° - " + minSecFunc(actgres);
         }
 
-        function minSecFunc(number){
+        /**
+         * Converts a degree into the DMS system and returns a text with the result and special symbols, mainly used in the second tab.
+         * @param {double} number - variable that contains a degree (it can be 23 or 57.302)
+         * @returns {string} result, example: 11°32'24.00"
+         */
+        function minSecFunc(number) {
             var min = ((number % 1) * 60);
             var sec = (min % 1) * 60;
 
-            var secShow = sec.toFixed(2);
             
-            return Math.trunc(number) + "°" + Math.trunc(min) + "'" + secShow + "\"";
+
+            var secShow = sec.toFixed(2);
+            if(secShow == 0 || secShow == 60){secShow = 0;}
+            var minShow = min.toFixed(2);
+
+            return Math.trunc(number) + "°" + Math.trunc(minShow) + "'" + secShow + "\"";
         }
 
+        /**
+         * Converts a degree into the DMS system, adds some text, and puts it in an HTML tag.
+         * @param {double} number - variable that contains a degree (it can be 23 or 57.302)
+         * @param {string} elementid - text id of html element where the result is supposed to be displayed (Angle - min - sec : 23°11'60.00"), it is used only for the first and third tabs
+         */
         function minSec(number, elementid) {
             var min = ((number % 1) * 60);
             var sec = (min % 1) * 60;
 
             var secShow = sec.toFixed(2);
-            console.log();
-            document.getElementById(elementid).innerText = "Angle - min - sec : " + Math.trunc(number) + "°" + Math.trunc(min) + "'" + secShow + "\"";
-        }
+            if(secShow == 0 || secShow == 60){secShow = 0;}
+            var minShow = min.toFixed(2);
 
-        function refractionFunc(n1, angle1, n2){ return asin((n1*Math.sin(angle1 * (Math.PI / 180)))/n2); }
+            document.getElementById(elementid).innerText = "Angle - min - sec : " + Math.trunc(number) + "°" + Math.trunc(minShow) + "'" + secShow + "\"";
+        }
         
-        function refraction(n1, angle1, n2, angle2){
+        function refractionFunc(n1, angle1, n2) { return asin((n1 * Math.sin(angle1 * (Math.PI / 180))) / n2); }
+
+        function refraction(n1, angle1, n2, angle2) {
+
+            // n1*sin1 = n2*sin2
+            // 1. n1 - x; x*sin1 = n2*sin2; x = (n2*sin2)/sin1
+            // 2. sin1 - x; n1*x = n2*sin2; x = (n2*sin2)/n1
+            // 3. n2 - x; n1*sin1 = x*sin2; x = (n1*sin1)/sin2
+            // 4. sin2 - x; n1*sin1 = n2*x; x = (n1*sin1)/n2
+
+            // n1/n2 = sin2/sin1
+
             console.log("sin(): " + sin(angle1));
             console.log("cos()" + cos(angle1));
             console.log("tg()" + tg(angle1));
             console.log("ctg()" + ctg(angle1));
-            var result=0;
-            if(n1==""){   }
+            var result = 0;
+            if (n1 == "") { }
+            // TODO the whole refraction
 
-            // var sinAngle2 = (n1*Math.sin(angle1 * (Math.PI / 180)))/n2;
-            // console.log("sinAngle2: " + asin(sinAngle2));
-            console.log(refractionFunc(n1, angle1, n2));
         }
+
+        function refractionInputChecker(currentElement)
+        {
+            const inputs = ["ri1", "ri2", "angle1", "angle2"];
+
+            var count = 0;
+
+            var n1 = document.getElementById("ri1").value;
+            var n2 = document.getElementById("ri2").value;
+            var ang1 = document.getElementById("angle1").value;
+            var ang2 = document.getElementById("angle2").value;
+
+            var N1 = document.getElementById("ri1");
+            var N2 = document.getElementById("ri2");
+            var ANG1 = document.getElementById("angle1");
+            var ANG2 = document.getElementById("angle2");
+
+            for(var x = 0; x<inputs.length; x++){
+                if(document.getElementById(inputs[x]).value != null && document.getElementById(inputs[x]).value != ""){ count++; console.log("count++"); }
+                
+            }
+            
+
+            console.log("count: " + count);
+            
+            if(count == 3){
+                if(n1 == null || n1 == ""){ console.log( "result: " + (n2*sin(ang2)) / sin(ang1) + " 1 " ); }
+                else if(ang1 == null || ang1 == ""){ console.log( "result: " + asin((n2*sin(ang2)) / n1) + " 2 "); }
+                else if(n2 == null || n2 == ""){ console.log( "result: " + (n1*sin(ang1)) / sin(ang2) + " 3 "); }
+                else if(ang2 == null || ang2 == ""){ console.log( "result: " + asin((n1*sin(ang1)) / n2) + " 4 "); document.getElementById("angle2").value = asin((n1*sin(ang1)) / n2); }
+                
+                document.getElementById("error-msg").innerText = "";
+            
+            }
+
+            //NaN means that all light is reflected.
+            else if(count == 4){
+                if(isNaN(ANG2.value)){ document.getElementById("error-msg").innerText = "NaN means that all light is reflected."; } else { document.getElementById("error-msg").innerText = ""; }
+                /*
+                // changing n1 affects n2
+                // 3. n2 - x; n1*sin1 = x*sin2; x = (n1*sin1)/sin2
+                if(currentElement == inputs[0]){ N2.value = ( ( N1.value*sin(ANG1.value) ) / sin(ANG2.value) ); }
+
+                // changing n2 affects n1
+                // 1. n1 - x; x*sin1 = n2*sin2; x = (n2*sin2)/sin1
+                else if(currentElement == inputs[1]){ N1.value = ( ( N2.value*sin(ANG2.value) ) / sin(ANG1.value) ); }
+
+                // changing angle 1 affects angle 2
+                // 4. sin2 - x; n1*sin1 = n2*x; x = (n1*sin1)/n2
+                else if(currentElement == inputs[2]){ ANG2.value = ( ( N1.value*sin(ANG1.value) ) / N2.value ); }
+
+                // changing angle 2 affects angle 1
+                // 2. sin1 - x; n1*x = n2*sin2; x = (n2*sin2)/n1
+                else if(currentElement == inputs[3]){ ANG1.value = ( ( N2.value*sin(ANG2.value) ) / N1.value ); }
+                */
+
+                // changing n1 affects ang2
+                // 4. sin2 - x; n1*sin1 = n2*x; x = (n1*sin1)/n2
+                if(currentElement == inputs[0]){ ANG2.value = asin( ( N1.value*sin(ANG1.value) ) / N2.value); }
+
+                // changing n2 affects ang2
+                // 4. sin2 - x; n1*sin1 = n2*x; x = (n1*sin1)/n2
+                else if(currentElement == inputs[1]){ ANG2.value = asin( ( N1.value*sin(ANG1.value) ) / N2.value ); }
+
+                // changing angle 1 affects angle 2
+                // 4. sin2 - x; n1*sin1 = n2*x; x = (n1*sin1)/n2
+                else if(currentElement == inputs[2]){ ANG2.value = asin( ( N1.value*sin(ANG1.value) ) / N2.value ); }
+
+                // changing angle 2 affects n2
+                // 3. n2 - x; n1*sin1 = x*sin2; x = (n1*sin1)/sin2
+                else if(currentElement == inputs[3]){ N2.value = ( ( N1.value*sin(ANG1.value) ) / sin(ANG2.value) ); }
+
+            }
+            else {
+
+            
+                console.log("count is not equal 3\n_____________");
+            }
+            
+
+
+            var count = 0;
+        }
+
         
+
     </script>
 </head>
 
 <body>
 
-
-
     <div class="wrapper">
-        <h1>WATCH IT !</h1>
+        <h1>CALCULATE IT !</h1>
 
         <div class="tabs">
             <div role="tablist" aria-label="Streaming Content">
@@ -381,10 +485,10 @@
 
             <!--- 1 --->
             <div role="tabpanel" aria-labelledby="series">
-                <p>Write your decimal degree and you will get value in DMS </p>
+                <p>Write your decimal degree, and you will get a value in DMS (degrees, minutes, and seconds)</p>
 
                 <div class="content"
-                    style="border:1px solid black; display:flex; justify-content: start; align-items: center;">
+                    style="border:1px solid white; border-radius: 10px; display:flex; justify-content: start; align-items: center;">
                     <style>
                         .content * {
                             margin-left: 10px;
@@ -394,7 +498,7 @@
                     <input type="text" placeholder="angle" id="sin-brad" onchange="minSec(this.value, 'res')"
                         onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')">
                     <span style="margin-left:-5px;">°</span>
-                    <p id="res"></p>
+                    <p id="res">Angle - min - sec : 0°0'0"</p>
 
                 </div>
 
@@ -403,10 +507,11 @@
 
             <!--- 2 --->
             <div role="tabpanel" aria-labelledby="movies" hidden>
-                <p>Write degree and you will get value for this trigomometric function from Bradis table </p>
+                <p>Write the degree, and you will get the value for this trigonometric function from the Bradis table
+                </p>
 
                 <div class="content"
-                    style="border:1px solid black; display:flex; flex-direction: column; justify-content: start; align-items: center; padding-top:10px;">
+                    style="border:1px solid white; border-radius: 10px;  display:flex; flex-direction: column; justify-content: start; align-items: center; padding-top:10px; ">
                     <style>
                         .content * {
                             margin-left: 10px;
@@ -414,36 +519,51 @@
                         }
                     </style>
                     <div class="input-part">
-                        <span style="margin-right:-20px;"><b>α=</b></span>
-                    <input type="text" placeholder="angle" id="angle" onchange="bradisCalc(this.value, 'minSec')"
-                        onkeypress="validate(event)" onkeyup="bradisCalc(this.value, 'minSec')">
-                        <span style="margin-left:-20px;"><b>°</b></span>
-                    </div>
-                    
-                    <div class="minut-sup-part"><p id="minSec">yoyo</p></div>
+                        <span style="margin-right:-30px;"><b>α =</b></span>
 
-                    <div class="bradis-result" style="background-color: white; border-radius: 10px; color:black; font-style: bold; margin-top:30px; width:40%; margin-bottom:30px;">
+                        <p id="small-txt2.1"
+                            style="position:absolute; top:407px; left:50%;  font-size:15px; text-align: center; max-width: 60%; transform: translate(-50%, -50%);">
+                            (here you can write an angle, and you are supposed to get a value from the Bradis table)</p>
+
+                        <input type="text" placeholder="angle" id="angle" onchange="bradisCalc(this.value, 'minSec')"
+                            onkeypress="validate(event)" onkeyup="bradisCalc(this.value, 'minSec')">
+                        <span style="margin-left:-30px;"><b>°</b></span>
+                    </div>
+
+                    <div class="minut-sup-part">
+                        <p id="minSec">Angle - min - sec : 0°0'0"</p>
+                    </div>
+
+                    <div class="bradis-result"
+                        style="background-color: white; border-radius: 10px; color:black; font-style: bold; margin-top:5px; width:40%; margin-bottom:30px;">
                         <hr>
-                        <p id="sin-res">sin() = </p>
-                        <p id="cos-res">cos() = </p>
-                        <p id="tg-res">tg() = </p>
-                        <p id="ctg-res">ctg() = </p>
+                        <p id="sin-res">sin(0°) = 0.00000000</p>
+                        <p id="cos-res">cos(0°) = 1.00000000</p>
+                        <p id="tg-res">tg(0°) = 0.00000000</p>
+                        <p id="ctg-res">ctg(0°) = Infinity</p>
                         <hr>
                     </div>
 
                     <div class="input-part">
                         <span style="margin-right:-20px;"><b></b></span>
-                    <input type="text" placeholder="value" id="value" onchange="antiBradisCalc(this.value)"
-                        onkeypress="validate(event)" onkeyup="antiBradisCalc(this.value)">
+
+                        <p id="small-txt2.2"
+                            style="position:absolute; top:787px; left:50%;  font-size:15px; text-align: center; max-width: 60%; transform: translate(-50%, -50%);">
+                            (here you can write a value from the Bradis table, and you are supposed to get an angle)</p>
+
+
+                        <input type="text" placeholder="value" id="value" onchange="antiBradisCalc(this.value)"
+                            onkeypress="validate(event)" onkeyup="antiBradisCalc(this.value)">
                         <span style="margin-left:-20px;"><b></b></span>
                     </div>
-                    <div class="antibradis-result" style="background-color: white; border-radius: 10px; color:black; font-style: bold; margin-top:30px; width:40%; margin-bottom:30px;">
+                    <div class="antibradis-result"
+                        style="background-color: white; border-radius: 10px; color:black; font-style: bold; margin-top:30px; width:40%; margin-bottom:30px;">
 
                         <hr>
-                        <p id="asin-res">sin(α) = </p>
-                        <p id="acos-res">cos(α) = </p>
-                        <p id="atg-res">tg(α) = </p>
-                        <p id="actg-res">ctg(α) = </p>
+                        <p id="asin-res">sin(α) = 0° - 0°0'0"</p>
+                        <p id="acos-res">cos(α) = 90° - 90°0'0"</p>
+                        <p id="atg-res">tg(α) = 0° - 0°0'0"</p>
+                        <p id="actg-res">ctg(α) = 90° - 90°0'0"</p>
                         <hr>
 
                     </div>
@@ -457,7 +577,7 @@
                 <p>Write data and you will get end refraction angle</p>
 
                 <div class="content"
-                    style="border:1px solid black; display:flex; flex-direction: column; justify-content: start; align-items: center;">
+                    style="border:1px solid white; border-radius: 10px; display:flex; flex-direction: column; justify-content: start; align-items: center; ">
                     <style>
                         div.content * {
                             margin-left: 20px;
@@ -465,59 +585,68 @@
                             
                         }
                     </style>
-                    <div class="part-one" style="display:flex; flex-direction: row; justify-content: start; align-items: center; margin-bottom:20px; border:1px solid black;" >
-                        <span>1.</span>
-                        <input type="text" placeholder="refractive index1" id="ri1" onchange="minSec(this.value, 'res')"
-                            onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')">
+                    <div class="part-one"
+                        style="display:flex; flex-direction: row; justify-content: start; align-items: center; margin-bottom:20px;  padding:10px; margin-top:15px;">
                         
-                        <input type="text" placeholder="angle1" id="angle1" onchange="minSec(this.value, 'res')"
-                            onkeypress="validate(event)" onkeyup="refraction(document.getElementById('ri1').value, document.getElementById('angle1').value, document.getElementById('ri2').value, document.getElementById('angle2').value)"> 
+
+                        <span style="margin-right:-23px;"><b>n1 =</b></span>
+                        <input type="text" placeholder="refractive index1" id="ri1" onchange="refractionInputChecker(this.id)"
+                            onkeypress="validate(event)" onkeyup="refractionInputChecker(this.id)">
+
+                        <span style="margin-right:-23px; margin-left:-10px;"><b>angle1 =</b></span>    
+                        <input type="text" placeholder="angle1" id="angle1" onchange="refractionInputChecker(this.id)"
+                            onkeypress="validate(event)" onkeyup="refractionInputChecker(this.id)">
                         <span style="margin-left:-5px;">°</span>
-                        <p id="res"></p>
+                        <!--<p id="res">3</p>-->
                     </div>
-                    
+
+
+                    <div class="part-two"
+                        style="display:flex; flex-direction: row; justify-content: start; align-items: center;  padding:10px; margin-bottom:15px;">
                         
-                    <div class="part-two" style="display:flex; flex-direction: row; justify-content: start; align-items: center; border:1px solid black;">
-                        <span>2.</span>
-                        <input type="text" placeholder="refractive index2" id="ri2" onchange="minSec(this.value, 'res')"
-                            onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')">
-                        
-                        <input type="text" placeholder="angle2" id="angle2" onchange="minSec(this.value, 'res')"
-                            onkeypress="validate(event)" onkeyup="minSec(this.value, 'res')"> 
-                            <span style="margin-left:-5px;">°</span>
-                        <p id="res"></p>
+
+                        <span style="margin-right:-23px;"><b>n2 =</b></span>
+                        <input type="text" placeholder="refractive index2" id="ri2" onchange="refractionInputChecker(this.id)"
+                            onkeypress="validate(event)" onkeyup="refractionInputChecker(this.id)">
+
+                        <span style="margin-right:-23px; margin-left:-10px;"><b>angle2 =</b></span>      
+                        <input type="text" placeholder="angle2" id="angle2" onchange="refractionInputChecker(this.id)"
+                            onkeypress="validate(event)" onkeyup="refractionInputChecker(this.id)">
+                        <span style="margin-left:-5px;">°</span>
+                        <!--<p id="res">2</p>-->
                     </div>
-                    res:
+
+                    <span id="error-msg"></span>
                     
+
 
                 </div>
 
             </div>
-            <!--- 3 --->
 
         </div>
     </div>
     <script>
-        /*.~~~~~~~~~~~~~~~~~~~~~.Tabs.~~~~~~~~~~~~~~~~~~~~~*/  
+        /*.~~~~~~~~~~~~~~~~~~~~~.Tabs.~~~~~~~~~~~~~~~~~~~~~*/
         const tabs = document.querySelector('.tabs');
         const tabButtons = tabs.querySelectorAll('[role="tab"]');
         const tabPanels = Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
 
         function handleTabClick(event) {
 
-            // Прячем все элменты tab panels (содержимое табов)
+            // Hide all tab panels (tabs)
             tabPanels.forEach(panel => {
                 panel.hidden = true;
             });
-            // Устанавливаем состояние selected для всех табов равное false
+            // Set selected for all tabs to false
             tabButtons.forEach(tab => {
                 // tab.ariaSelected = false;
                 tab.setAttribute('aria-selected', false);
             });
-            // Для "кликнутого" таба устанвливаем значение selected равное true
+            // For "click" the selected value is set to true
             event.currentTarget.setAttribute('aria-selected', true);
 
-            // Находим tabPanel для "кликнутого" таба и отображаем
+            // Find tabPanel for the "clicked" tab and display it
             const { id } = event.currentTarget;
 
             console.log(tabPanels);
@@ -532,8 +661,8 @@
             .forEach(button => button.addEventListener('click', handleTabClick));
 
 
-        /*.~~~~~~~~~~~~~~~~~~~~~.Tabs.~~~~~~~~~~~~~~~~~~~~~*/  
-        
+        /*.~~~~~~~~~~~~~~~~~~~~~.Tabs.~~~~~~~~~~~~~~~~~~~~~*/
+
         document.getElementById('angle').addEventListener('keydown', function (event) {
             // Check if Enter was pressed
             if (event.keyCode === 13) {
